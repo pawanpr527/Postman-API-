@@ -1,0 +1,416 @@
+{
+	"info": {
+		"_postman_id": "9716ee6d-9229-45c7-9c97-a261f8af6cf6",
+		"name": "Flask API",
+		"description": "## **Flask JWT Authentication API – Postman Guide**\n\n### **Base URL**\n\n```\nhttp://127.0.0.1:5000\n\n ```\n\n---\n\n### **1\\. Login (Generate JWT Token)**\n\n**Endpoint:**\n\n```\nPOST /login\n\n ```\n\n**Description:**  \n  \nAuthenticates a user and returns a JWT token to be used in subsequent requests.\n\n**Headers:**\n\n| Key | Value |\n| --- | --- |\n| Content-Type | application/json |\n\n**Body (raw JSON):**\n\n```\n{\n    \"username\": \"pawan\",\n    \"password\": \"1234\"\n}\n\n ```\n\n**Response (200 OK):**\n\n```\n{\n    \"token\": \"<JWT_TOKEN_STRING>\"\n}\n\n ```\n\n**Usage:**  \n  \nCopy the `token` value from the response and add it to Postman’s **Authorization** tab:\n\n- Type: **Bearer Token**\n    \n- Token:\n    \n\n---\n\n### **2\\. Get Products**\n\n**Endpoint:**\n\n```\nGET /products\n\n ```\n\n**Description:**  \n  \nReturns a list of available products.  \n**Protected** – Requires JWT token.\n\n**Headers:**\n\n| Key | Value |\n| --- | --- |\n| Authorization | Bearer |\n\n**Response (200 OK):**\n\n```\n[\n    {\"id\": 1, \"name\": \"Laptop\", \"price\": 750},\n    {\"id\": 2, \"name\": \"Phone\", \"price\": 500}\n]\n\n ```\n\n---\n\n### **3\\. Add to Cart**\n\n**Endpoint:**\n\n```\nPOST /cart\n\n ```\n\n**Description:**  \n  \nAdds a product to the user’s cart.  \n**Protected** – Requires JWT token.\n\n**Headers:**\n\n| Key | Value |\n| --- | --- |\n| Authorization | Bearer |\n| Content-Type | application/json |\n\n**Body (raw JSON):**\n\n```\n{\n    \"id\": 1\n}\n\n ```\n\n**Response (200 OK):**\n\n```\n{\n    \"cart\": [1]\n}\n\n ```\n\n---\n\n### **4\\. Place Order**\n\n**Endpoint:**\n\n```\nPOST /order\n\n ```\n\n**Description:**  \n  \nPlaces an order for the items in the cart.  \n**Protected** – Requires JWT token.\n\n**Headers:**\n\n| Key | Value |\n| --- | --- |\n| Authorization | Bearer |\n\n**Response (200 OK):**\n\n```\n{\n    \"message\": \"Order placed by pawan\",\n    \"cart\": [1]\n}\n\n ```\n\n---\n\n✅ **Tips for Postman Testing:**\n\n1. Always call **/login** first to get a fresh token.\n    \n2. In Postman, set the token in the **Authorization → Bearer Token** field for protected requests.\n    \n3. If you restart the server and use a new secret key, you must log in again to get a new token.\n    \n4. You can create a Postman **Collection** and set the `token` as an environment variable for convenience.\n    \n\n---",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "45709921",
+		"_collection_link": "https://pawan-5268388.postman.co/workspace/Pawan's-Workspace~9298926b-d43e-4cde-8f6e-4a10cb65aeba/collection/45709921-9716ee6d-9229-45c7-9c97-a261f8af6cf6?action=share&source=collection_link&creator=45709921"
+	},
+	"item": [
+		{
+			"name": "auth",
+			"item": [
+				{
+					"name": "Login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.environment.set(\"token\",pm.response.json().token)"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"username\": \"Arjun\",\n    \"password\": \"9822\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:5000/login",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "5000",
+							"path": [
+								"login"
+							]
+						},
+						"description": "# Login API\n\nThis endpoint is used to authenticate users by logging them into the system. It verifies the provided credentials and, upon successful authentication, returns a token that can be used for subsequent requests.\n\n## Request\n\n- **Method**: `POST`\n    \n- **Endpoint**: `http://127.0.0.1:5000/login`\n    \n\n### Request Body\n\nThe request body must be in JSON format and should contain the following parameters:\n\n- **username** (string): The username of the user attempting to log in.\n    \n- **password** (string): The password associated with the provided username.\n    \n\n#### Example Request Body\n\n``` json\n{\n  \"username\": \"example_user\",\n  \"password\": \"example_password\"\n}\n\n ```\n\n## Response\n\nThe response will be in JSON format and will contain the following:\n\n- **token** (string): A token that is generated upon successful authentication. This token is required for accessing protected resources.\n    \n\n### Example Response\n\n``` json\n{\n  \"token\": \"your_generated_token\"\n}\n\n ```\n\n## Status Codes\n\n- **200 OK**: Indicates that the login was successful and the token is returned.\n    \n- **401 Unauthorized**: Indicates that the login credentials are invalid.\n    \n\nEnsure that you handle the response appropriately in your application to manage user sessions and access control.\n\nThis endpoint allows users to authenticate by providing their credentials. Upon successful authentication, a token is returned which can be used for subsequent requests.\n\n### Request\n\n- **Method**: POST\n    \n- **Endpoint**: `http://127.0.0.1:5000/login`\n    \n- **Request Body**: The request should be sent in JSON format with the following parameters:\n    \n    - `username` (string): The username of the user attempting to log in.\n        \n    - `password` (string): The password associated with the username.\n        \n\n#### Example Request Body\n\n``` json\n{\n  \"username\": \"example_username\",\n  \"password\": \"example_password\"\n}\n\n ```\n\n### Response\n\n- **Status Code**: 200 OK\n    \n- **Content-Type**: application/json\n    \n- **Response Body**: On successful authentication, the response will include a JSON object containing a token.\n    \n\n#### Example Response\n\n``` json\n{\n  \"token\": \"example_token\"\n}\n\n ```\n\n### Notes\n\n- The token returned in the response should be used for authorization in subsequent API calls.\n    \n- Ensure that the username and password are correct to receive a valid token."
+					},
+					"response": [
+						{
+							"name": "Login",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"username\": \"Arjun\",\n    \"password\": \"9822\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://127.0.0.1:5000/login",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "5000",
+									"path": [
+										"login"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Server",
+									"value": "Werkzeug/3.1.3 Python/3.9.6"
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 15 Aug 2025 17:18:35 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Content-Length",
+									"value": "349"
+								},
+								{
+									"key": "Connection",
+									"value": "close"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"token\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTc1NTI3ODMxNSwianRpIjoiYjlhOGY2MTEtMzNiMi00NWM2LTliNGMtMDIyMDQ5YmFiN2I1IiwidHlwZSI6ImFjY2VzcyIsInN1YiI6IkFyanVuIiwibmJmIjoxNzU1Mjc4MzE1LCJjc3JmIjoiNGI1OTUzNTAtNjE2Ni00MzA4LWI5ZTQtMjliNTI2MjMwNDViIiwiZXhwIjoxNzU1Mjc5MjE1fQ._RcFXKC1ih6X-63IUay6yvQrRvcSPH58AJvyoaHGKtA\"\n}"
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "products",
+			"item": [
+				{
+					"name": "Products",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://127.0.0.1:5000/products",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "5000",
+							"path": [
+								"products"
+							]
+						},
+						"description": "### Get Products\n\nThis endpoint retrieves a list of products from the server. The response contains an array of product objects, each with the following fields:\n\n- **id**: A unique identifier for the product (integer).\n    \n- **name**: The name of the product (string).\n    \n- **price**: The price of the product (float).\n    \n\n#### Request\n\n- **Method**: GET\n    \n- **URL**: `http://127.0.0.1:5000/products`\n    \n\n#### Response\n\n- **Status Code**: 200 OK\n    \n- **Body**: An array of product objects.\n    \n\nExample Response:\n\n``` json\n[{\"id\":0,\"name\":\"\",\"price\":0}]\n\n ```\n\nThis response indicates that the request was successful and provides the product details in JSON format."
+					},
+					"response": [
+						{
+							"name": "Products",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://127.0.0.1:5000/products",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "5000",
+									"path": [
+										"products"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Server",
+									"value": "Werkzeug/3.1.3 Python/3.9.6"
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 15 Aug 2025 17:19:08 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Content-Length",
+									"value": "124"
+								},
+								{
+									"key": "Connection",
+									"value": "close"
+								}
+							],
+							"cookie": [],
+							"body": "[\n    {\n        \"id\": 1,\n        \"name\": \"Laptop\",\n        \"price\": 750\n    },\n    {\n        \"id\": 2,\n        \"name\": \"Phone\",\n        \"price\": 500\n    }\n]"
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "cart",
+			"item": [
+				{
+					"name": "cart",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"id\" : 30\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:5000/cart",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "5000",
+							"path": [
+								"cart"
+							]
+						},
+						"description": "## Add Item to Cart\n\nThis endpoint allows users to add an item to their shopping cart by providing the item's ID.\n\n### HTTP Method\n\n`POST`\n\n### Endpoint\n\n`http://127.0.0.1:5000/cart`\n\n### Request Body\n\nThe request must contain a JSON object with the following parameter:\n\n- **id** (integer): The unique identifier for the item to be added to the cart.\n    \n\n#### Example Request\n\n``` json\n{\n  \"id\": 30\n}\n\n ```\n\n### Expected Response\n\nUpon a successful request, the server will respond with a status code of `200` and a JSON object containing the current state of the cart.\n\n#### Response Format\n\n``` json\n{\n  \"cart\": [0]\n}\n\n ```\n\n### Status Codes\n\n- **200 OK**: The item was successfully added to the cart.\n    \n- Other status codes may be returned for error scenarios (not documented here).\n    \n\n### Notes\n\nThe response will always include the `cart` key, which represents the current contents of the user's cart after the addition of the item."
+					},
+					"response": [
+						{
+							"name": "Cart",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"id\" : 30\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://127.0.0.1:5000/cart",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "5000",
+									"path": [
+										"cart"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Server",
+									"value": "Werkzeug/3.1.3 Python/3.9.6"
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 15 Aug 2025 17:20:41 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Content-Length",
+									"value": "51"
+								},
+								{
+									"key": "Connection",
+									"value": "close"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"cart\": [\n        24,\n        24,\n        20,\n        30\n    ]\n}"
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "order",
+			"item": [
+				{
+					"name": "Order",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:5000/order",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "5000",
+							"path": [
+								"order"
+							]
+						},
+						"description": "### Endpoint: Create Order\n\nThis endpoint allows users to create an order based on the items in their cart.\n\n#### Request\n\n- **Method**: POST\n    \n- **URL**: `http://127.0.0.1:5000/order`\n    \n\nThe request body should contain the following parameters:\n\n- **cart** (array of integers): This parameter represents the items in the user's cart. Each item is identified by a unique integer ID.\n    \n\n#### Response\n\nUpon successful execution, the server will respond with a JSON object containing:\n\n- **cart** (array of integers): An array representing the items that were successfully processed in the order. This may be empty if no items were provided.\n    \n- **message** (string): A message indicating the result of the order creation process. This may be an empty string if there are no messages to convey.\n    \n\n##### Example Response\n\n``` json\n{\n  \"cart\": [0],\n  \"message\": \"\"\n}\n\n ```\n\nIn this example, the response indicates that the order was created with one item (ID 0) in the cart, and there are no additional messages."
+					},
+					"response": [
+						{
+							"name": "Order",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://127.0.0.1:5000/order",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "5000",
+									"path": [
+										"order"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Server",
+									"value": "Werkzeug/3.1.3 Python/3.9.6"
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 15 Aug 2025 17:16:52 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Content-Length",
+									"value": "65"
+								},
+								{
+									"key": "Connection",
+									"value": "close"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"cart\": [\n        24\n    ],\n    \"message\": \"Order placed by Pawan\"\n}"
+						}
+					]
+				}
+			]
+		}
+	]
+}
