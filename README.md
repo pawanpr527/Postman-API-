@@ -1,7 +1,18 @@
-Api_postman.json : open this file in postman.
-api : it have 3 python file so that mockApi.py is for Api_postman.json
+# Flask JWT Authentication API
 
-Api_postman is basically collection for testing E-commerce APIs.
-api endpoints are /login, /products,/cart,/order
+A simple Flask REST API with JWT authentication that allows users to log in, view products, add items to a cart, and place orders.
 
-You must call login first then you can make request on another endpoints.
+---
+
+## 🚀 Features
+- User login with **JWT token**  
+- Get list of products (**protected**)  
+- Add products to cart (**protected**)  
+- Place an order (**protected**)  
+
+---
+
+## 📦 Requirements
+- Python 3.8+
+- Flask
+- Flask-JWT-Extended
