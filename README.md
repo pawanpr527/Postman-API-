@@ -16,3 +16,5 @@ A simple Flask REST API with JWT authentication that allows users to log in, vie
 - Python 3.8+
 - Flask
 - Flask-JWT-Extended
+
+---
